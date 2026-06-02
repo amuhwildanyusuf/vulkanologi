@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geologia — Vulkanologi & Fasies Gunung Api</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root {
+  --void: #0A0806;
+  --ash: #1C1814;
+  --cinder: #2E2620;
+  --pumice: #5A4E42;
+  --smoke: #8A7D72;
+  --bone: #D8CFC4;
+  --cream: #F0EBE3;
+  --lava: #C43010;
+  --lava-bright: #E84020;
+  --ember: #E07020;
+  --gold: #C8900A;
+  --sulfur: #C8B400;
+  --cool: #4A7090;
+  --text: #1C1814;
+  --text-muted: #5A4E42;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--void);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+/* ── LAVA CURSOR ── */
+*, *::after { cursor: default; }
+a, button { cursor: pointer; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 4rem;
+  background: rgba(10,8,6,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(196,48,16,0.25);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--cream); letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--lava); font-style: italic; }
+.nav-links { display:flex; gap:2.5rem; list-style:none; }
+.nav-links a {
+  text-decoration:none; color:rgba(216,207,196,0.55);
+  font-size:0.8rem; font-weight:500; letter-spacing:0.1em;
+  text-transform:uppercase; transition:color 0.2s;
+}
+.nav-links a:hover { color: var(--ember); }
+.nav-back {
+  font-size:0.8rem; font-weight:500; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--pumice);
+  text-decoration:none; border:1px solid rgba(90,78,66,0.4);
+  padding:0.4rem 1rem; transition:all 0.2s;
+}
+.nav-back:hover { color:var(--cream); border-color:var(--lava); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 5rem 6rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset:0;
+  background: var(--void);
+}
+.volcano-scene {
+  position: absolute; inset:0; width:100%; height:100%;
+}
+.hero-content {
+  position: relative; z-index:10;
+  max-width: 700px;
+}
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:0.75rem;
+  margin-bottom: 1.5rem;
+}
+.eyebrow-line { width:32px; height:1px; background:var(--lava); }
+.eyebrow-text {
+  font-size:0.7rem; font-weight:600; letter-spacing:0.2em;
+  text-transform:uppercase; color:var(--lava);
+}
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.2rem,6vw,5.5rem);
+  font-weight: 700; line-height: 0.95;
+  color: var(--cream);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.4rem;
+}
+.hero h1 em { font-style:italic; color:var(--ember); }
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem,3vw,2.8rem);
+  font-weight: 400; font-style: italic;
+  color: rgba(216,207,196,0.45);
+  margin-bottom: 2rem;
+  line-height: 1.2;
+}
+.hero p {
+  font-size:1rem; line-height:1.8;
+  color: rgba(216,207,196,0.65);
+  max-width: 560px; margin-bottom: 2.5rem;
+}
+.hero-cta { display:flex; gap:1.25rem; align-items:center; }
+.btn-fire {
+  background: var(--lava); color:var(--cream);
+  padding:0.85rem 2rem; border:none;
+  font-family:'Outfit',sans-serif; font-size:0.8rem; font-weight:600;
+  letter-spacing:0.1em; text-transform:uppercase;
+  text-decoration:none; display:inline-block;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-fire:hover { background:var(--lava-bright); transform:translateY(-2px); }
+.btn-outline {
+  color:rgba(216,207,196,0.6); font-size:0.8rem; font-weight:500;
+  letter-spacing:0.08em; text-transform:uppercase;
+  text-decoration:none; border:1px solid rgba(216,207,196,0.2);
+  padding:0.85rem 1.75rem; transition:all 0.2s;
+}
+.btn-outline:hover { color:var(--cream); border-color:rgba(216,207,196,0.5); }
+
+/* scroll indicator */
+.scroll-hint {
+  position:absolute; bottom:2.5rem; right:5rem; z-index:10;
+  display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+}
+.scroll-hint span {
+  font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase;
+  color:rgba(216,207,196,0.3); writing-mode:vertical-rl;
+}
+.scroll-line {
+  width:1px; height:60px;
+  background: linear-gradient(to bottom, var(--lava), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%,100%{opacity:0.3;transform:scaleY(1);}
+  50%{opacity:1;transform:scaleY(0.7);}
+}
+
+/* ── FASIES INTRO ── */
+.intro-section {
+  background: var(--ash);
+  padding: 7rem 5rem;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; align-items: center;
+  border-top: 1px solid rgba(196,48,16,0.15);
+}
+.intro-text .label {
+  font-size:0.7rem; font-weight:600; letter-spacing:0.2em;
+  text-transform:uppercase; color:var(--ember);
+  display:block; margin-bottom:1rem;
+}
+.intro-text h2 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,3.5vw,3rem); font-weight:700;
+  line-height:1.05; color:var(--cream);
+  margin-bottom:1.5rem; letter-spacing:-0.02em;
+}
+.intro-text p {
+  font-size:0.95rem; line-height:1.85;
+  color:rgba(216,207,196,0.6); margin-bottom:1rem;
+}
+.intro-text p:last-of-type { margin-bottom:0; }
+
+.fasies-diagram-wrap {
+  background: rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  padding:2rem; border-radius:2px;
+}
+
+/* ── FASIES CARDS ── */
+.fasies-section {
+  padding:7rem 5rem; background:var(--void);
+}
+.section-head { margin-bottom:4rem; }
+.section-head .label {
+  font-size:0.7rem; font-weight:600; letter-spacing:0.2em;
+  text-transform:uppercase; color:var(--lava); display:block; margin-bottom:1rem;
+}
+.section-head h2 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,3.5vw,2.8rem); font-weight:700;
+  line-height:1.05; color:var(--cream); letter-spacing:-0.02em;
+  margin-bottom:1rem;
+}
+.section-head p {
+  font-size:0.95rem; line-height:1.8;
+  color:rgba(216,207,196,0.55); max-width:620px;
+}
+
+.fasies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.fasies-card {
+  background: var(--void);
+  padding: 2.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+.fasies-card:hover { background: var(--ash); }
+.fasies-card::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0;
+  height:3px;
+  background: var(--card-color, var(--lava));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.fasies-card:hover::after { transform: scaleX(1); }
+
+.card-zone {
+  font-size:0.65rem; font-weight:600; letter-spacing:0.2em;
+  text-transform:uppercase;
+  color: var(--card-color, var(--lava));
+  margin-bottom:1.25rem; display:block;
+}
+.card-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.5rem; font-weight:700; line-height:1;
+  color:rgba(255,255,255,0.04);
+  position:absolute; top:1rem; right:1.5rem;
+  pointer-events:none; user-select:none;
+}
+.card-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem; font-weight:700;
+  color:var(--cream); margin-bottom:0.75rem;
+  line-height:1.15;
+}
+.card-desc {
+  font-size:0.875rem; line-height:1.75;
+  color:rgba(216,207,196,0.55); margin-bottom:1.5rem;
+}
+.card-features {
+  display:flex; flex-direction:column; gap:0.5rem;
+}
+.feature-item {
+  display:flex; align-items:flex-start; gap:0.6rem;
+  font-size:0.8rem; color:rgba(216,207,196,0.5);
+  line-height:1.5;
+}
+.feature-dot {
+  width:5px; height:5px; border-radius:50%;
+  background: var(--card-color, var(--lava));
+  flex-shrink:0; margin-top:5px; opacity:0.7;
+}
+.card-badge {
+  display:inline-block; margin-top:1.5rem;
+  font-size:0.65rem; font-weight:600; letter-spacing:0.12em;
+  text-transform:uppercase; padding:0.25rem 0.7rem;
+  border:1px solid; border-color: var(--card-color, var(--lava));
+  color: var(--card-color, var(--lava));
+  border-radius:1px;
+}
+
+/* ── ERUPTION TYPES ── */
+.eruption-section {
+  background: var(--ash);
+  padding: 7rem 5rem;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.erupt-grid {
+  display:grid; grid-template-columns: repeat(2,1fr);
+  gap:1.5rem; margin-top:3.5rem;
+}
+.erupt-card {
+  background: var(--cinder);
+  border:1px solid rgba(255,255,255,0.05);
+  padding:2rem;
+  display:grid; grid-template-columns:auto 1fr;
+  gap:1.5rem; align-items:start;
+  transition:border-color 0.25s;
+}
+.erupt-card:hover { border-color:rgba(196,48,16,0.4); }
+.erupt-icon {
+  width:48px; height:48px;
+  background:rgba(196,48,16,0.12);
+  border:1px solid rgba(196,48,16,0.2);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; font-size:1.4rem;
+}
+.erupt-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem; font-weight:700;
+  color:var(--cream); margin-bottom:0.4rem;
+}
+.erupt-vei {
+  font-size:0.7rem; font-weight:600; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--ember);
+  margin-bottom:0.75rem; display:block;
+}
+.erupt-desc {
+  font-size:0.85rem; line-height:1.7;
+  color:rgba(216,207,196,0.5);
+}
+
+/* ── PRODUK VOLKANIK ── */
+.produk-section {
+  padding: 7rem 5rem; background:var(--void);
+}
+.produk-table {
+  width:100%; border-collapse:collapse; margin-top:3rem;
+}
+.produk-table thead tr {
+  border-bottom:1px solid rgba(196,48,16,0.4);
+}
+.produk-table th {
+  font-size:0.7rem; font-weight:600; letter-spacing:0.15em;
+  text-transform:uppercase; color:var(--lava);
+  padding:0.75rem 1.25rem; text-align:left;
+}
+.produk-table tbody tr {
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  transition:background 0.2s;
+}
+.produk-table tbody tr:hover { background:rgba(255,255,255,0.03); }
+.produk-table td {
+  padding:1rem 1.25rem;
+  font-size:0.875rem; line-height:1.6;
+  color:rgba(216,207,196,0.65);
+  vertical-align:top;
+}
+.produk-table td:first-child {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem; font-weight:600;
+  color:var(--cream); white-space:nowrap;
+}
+.produk-table td:nth-child(2) {
+  color:var(--ember); font-size:0.8rem; font-weight:500;
+}
+.fasies-tag {
+  display:inline-block; font-size:0.65rem; font-weight:600;
+  letter-spacing:0.1em; text-transform:uppercase;
+  padding:0.15rem 0.5rem; margin:0.15rem;
+  border-radius:1px;
+}
+.tag-proximal { background:rgba(196,48,16,0.2); color:#E87060; border:1px solid rgba(196,48,16,0.3); }
+.tag-medial { background:rgba(224,112,32,0.15); color:#E8A060; border:1px solid rgba(224,112,32,0.25); }
+.tag-distal { background:rgba(74,112,144,0.15); color:#80B0CC; border:1px solid rgba(74,112,144,0.25); }
+
+/* ── GUNUNG API INDONESIA ── */
+.indonesia-section {
+  background: var(--ash);
+  padding: 7rem 5rem;
+  border-top:1px solid rgba(255,255,255,0.04);
+}
+.gunung-grid {
+  display:grid; grid-template-columns: repeat(4,1fr);
+  gap:1px; background:rgba(255,255,255,0.05);
+  margin-top:3.5rem;
+  border:1px solid rgba(255,255,255,0.05);
+}
+.gunung-card {
+  background:var(--ash); padding:1.75rem 1.5rem;
+  transition:background 0.25s;
+  position:relative; overflow:hidden;
+}
+.gunung-card:hover { background:var(--cinder); }
+.gunung-elev {
+  font-size:0.65rem; font-weight:600; letter-spacing:0.15em;
+  text-transform:uppercase; color:var(--pumice);
+  margin-bottom:0.6rem; display:block;
+}
+.gunung-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.35rem; font-weight:700;
+  color:var(--cream); margin-bottom:0.3rem;
+}
+.gunung-lokasi {
+  font-size:0.78rem; color:var(--pumice); margin-bottom:1rem;
+}
+.gunung-status {
+  display:inline-block; font-size:0.65rem; font-weight:600;
+  letter-spacing:0.1em; text-transform:uppercase;
+  padding:0.2rem 0.6rem; border-radius:1px;
+  margin-bottom:0.75rem;
+}
+.status-aktif { background:rgba(196,48,16,0.2); color:#E87060; border:1px solid rgba(196,48,16,0.35); }
+.status-waspada { background:rgba(224,112,32,0.15); color:#E8A060; border:1px solid rgba(224,112,32,0.25); }
+.gunung-tipe {
+  font-size:0.78rem; color:rgba(216,207,196,0.45); line-height:1.5;
+}
+.gunung-bar {
+  position:absolute; bottom:0; left:0;
+  height:2px; background:var(--lava); opacity:0.5;
+}
+
+/* ── BAHAYA VOLKANIK ── */
+.bahaya-section {
+  padding: 7rem 5rem; background:var(--void);
+}
+.bahaya-grid {
+  display:grid; grid-template-columns: repeat(3,1fr);
+  gap:1.5rem; margin-top:3.5rem;
+}
+.bahaya-card {
+  background:var(--ash); border:1px solid rgba(255,255,255,0.04);
+  padding:2rem; position:relative;
+  border-left:3px solid var(--card-color, var(--lava));
+  transition:transform 0.25s;
+}
+.bahaya-card:hover { transform:translateX(4px); }
+.bahaya-icon { font-size:2rem; margin-bottom:1rem; display:block; }
+.bahaya-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem; font-weight:700; color:var(--cream);
+  margin-bottom:0.5rem;
+}
+.bahaya-desc {
+  font-size:0.85rem; line-height:1.7;
+  color:rgba(216,207,196,0.5);
+}
+.bahaya-level {
+  display:flex; align-items:center; gap:0.5rem;
+  margin-top:1.25rem;
+}
+.bahaya-level span { font-size:0.7rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--pumice); }
+.level-dots { display:flex; gap:3px; }
+.level-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.1); }
+.level-dot.on { background:var(--card-color, var(--lava)); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--void);
+  border-top:1px solid rgba(255,255,255,0.06);
+  padding:3rem 5rem 2rem;
+}
+.footer-inner {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:2rem; padding-bottom:2rem;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.footer-brand {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem; font-weight:700; color:var(--cream);
+}
+.footer-brand span { color:var(--lava); font-style:italic; }
+.footer-links { display:flex; gap:2rem; }
+.footer-links a {
+  text-decoration:none; font-size:0.8rem; letter-spacing:0.08em;
+  text-transform:uppercase; color:rgba(216,207,196,0.3);
+  transition:color 0.2s;
+}
+.footer-links a:hover { color:var(--ember); }
+.footer-bottom {
+  display:flex; justify-content:space-between;
+  font-size:0.75rem; color:rgba(216,207,196,0.2);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes magmaRise {
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
+}
+@keyframes emberFloat {
+  0%{transform:translateY(0) translateX(0);opacity:0.8;}
+  100%{transform:translateY(-120px) translateX(var(--dx,10px));opacity:0;}
+}
+@keyframes lavaFlow {
+  0%{stroke-dashoffset:600;}
+  100%{stroke-dashoffset:0;}
+}
+.ember {
+  position:absolute; width:3px; height:3px;
+  border-radius:50%; background:var(--ember);
+  animation: emberFloat var(--dur,3s) ease-out var(--delay,0s) infinite;
+}
+
+/* responsive */
+@media(max-width:960px){
+  nav{padding:1rem 1.5rem;}
+  .nav-links{display:none;}
+  .hero{padding:0 1.5rem 5rem;}
+  .intro-section,.fasies-section,.eruption-section,.produk-section,.indonesia-section,.bahaya-section{padding:4rem 1.5rem;}
+  .intro-section{grid-template-columns:1fr;}
+  .fasies-grid{grid-template-columns:1fr;}
+  .erupt-grid{grid-template-columns:1fr;}
+  .gunung-grid{grid-template-columns:repeat(2,1fr);}
+  .bahaya-grid{grid-template-columns:1fr;}
+  footer{padding:2rem 1.5rem;}
+  .footer-inner{flex-direction:column;gap:1.5rem;text-align:center;}
+  .footer-bottom{flex-direction:column;gap:0.5rem;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="geologi-mineral-batuan.html" class="nav-logo">Geo<span>logia</span></a>
+  <ul class="nav-links">
+    <li><a href="#fasies">Fasies</a></li>
+    <li><a href="#eruption">Tipe Erupsi</a></li>
+    <li><a href="#produk">Produk Volkanik</a></li>
+    <li><a href="#indonesia">G. Api Indonesia</a></li>
+    <li><a href="#bahaya">Bahaya</a></li>
+  </ul>
+  <a href="geologi-mineral-batuan.html" class="nav-back">← Mineral & Batuan</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <!-- Volcano scene SVG -->
+    <svg class="volcano-scene" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <!-- deep sky -->
+      <rect width="1440" height="900" fill="#0A0806"/>
+      <!-- atmosphere glow -->
+      <ellipse cx="720" cy="500" rx="700" ry="350" fill="#1A0C06" opacity="0.9"/>
+      <!-- distant volcanic haze -->
+      <ellipse cx="720" cy="900" rx="900" ry="300" fill="#3A1005" opacity="0.4"/>
+
+      <!-- VOLCANO SILHOUETTE -->
+      <!-- far volcano left -->
+      <polygon points="80,900 320,360 560,900" fill="#1A120A" opacity="0.7"/>
+      <polygon points="120,900 320,370 520,900" fill="#140E08" opacity="0.6"/>
+      <!-- main central volcano -->
+      <polygon points="200,900 720,180 1240,900" fill="#200C04" opacity="0.95"/>
+      <polygon points="280,900 720,190 1160,900" fill="#180A04" opacity="0.9"/>
+      <!-- inner cone darker -->
+      <polygon points="440,900 720,220 1000,900" fill="#100804" opacity="0.95"/>
+      <!-- far volcano right -->
+      <polygon points="900,900 1150,410 1400,900" fill="#1A120A" opacity="0.6"/>
+
+      <!-- LAVA GLOW at summit -->
+      <ellipse cx="720" cy="195" rx="55" ry="22" fill="#E84020" opacity="0.25"/>
+      <ellipse cx="720" cy="195" rx="35" ry="14" fill="#FF6030" opacity="0.3"/>
+      <ellipse cx="720" cy="195" rx="18" ry="8" fill="#FFA050" opacity="0.4"/>
+
+      <!-- LAVA FLOWS down slopes -->
+      <!-- left flow -->
+      <path d="M710,210 Q650,350 580,480 Q530,580 490,700 L510,700 Q550,580 600,480 Q670,350 730,210Z"
+        fill="#C43010" opacity="0.18"/>
+      <!-- right flow -->
+      <path d="M730,210 Q790,360 860,490 Q910,590 950,720 L970,720 Q930,590 880,490 Q810,360 750,210Z"
+        fill="#C43010" opacity="0.15"/>
+      <!-- small lava stream -->
+      <path d="M715,220 Q700,300 680,420 Q670,500 665,600 L672,600 Q677,500 687,420 Q707,300 722,220Z"
+        fill="#E06020" opacity="0.2"/>
+
+      <!-- SMOKE PLUME -->
+      <ellipse cx="720" cy="130" rx="40" ry="25" fill="#2A2420" opacity="0.6"/>
+      <ellipse cx="710" cy="95" rx="55" ry="32" fill="#252018" opacity="0.5"/>
+      <ellipse cx="700" cy="55" rx="75" ry="40" fill="#201C16" opacity="0.4"/>
+      <ellipse cx="690" cy="15" rx="90" ry="45" fill="#1C1810" opacity="0.35"/>
+
+      <!-- LAVA LAKE glow at base -->
+      <ellipse cx="720" cy="870" rx="500" ry="60" fill="#E04010" opacity="0.08"/>
+      <ellipse cx="720" cy="890" rx="380" ry="40" fill="#C83010" opacity="0.1"/>
+
+      <!-- Stars -->
+      <circle cx="100" cy="50" r="1" fill="#FFF8F0" opacity="0.4"/>
+      <circle cx="250" cy="30" r="1.5" fill="#FFF8F0" opacity="0.35"/>
+      <circle cx="400" cy="70" r="1" fill="#FFF8F0" opacity="0.3"/>
+      <circle cx="1050" cy="40" r="1" fill="#FFF8F0" opacity="0.35"/>
+      <circle cx="1200" cy="25" r="1.5" fill="#FFF8F0" opacity="0.3"/>
+      <circle cx="1350" cy="60" r="1" fill="#FFF8F0" opacity="0.4"/>
+      <circle cx="180" cy="120" r="1" fill="#FFF8F0" opacity="0.25"/>
+      <circle cx="1280" cy="110" r="1" fill="#FFF8F0" opacity="0.25"/>
+
+      <!-- PYROCLASTIC particles rising -->
+      <circle cx="715" cy="170" r="2.5" fill="#FF8040" opacity="0.6"/>
+      <circle cx="725" cy="162" r="1.8" fill="#FFA060" opacity="0.5"/>
+      <circle cx="708" cy="155" r="2" fill="#FF6020" opacity="0.55"/>
+      <circle cx="732" cy="148" r="1.5" fill="#FFB080" opacity="0.45"/>
+      <circle cx="718" cy="140" r="1.5" fill="#FF8040" opacity="0.4"/>
+
+      <!-- Ground/lava field at base -->
+      <path d="M0,820 Q200,800 400,820 Q600,840 720,830 Q840,820 1040,840 Q1240,855 1440,835 L1440,900 L0,900Z"
+        fill="#1A0E08" opacity="0.95"/>
+      <path d="M0,850 Q300,835 600,848 Q900,860 1200,848 Q1320,843 1440,852 L1440,900 L0,900Z"
+        fill="#140A06" opacity="0.9"/>
+      <!-- lava crack glows -->
+      <path d="M100,880 Q300,865 500,875 Q700,885 900,872 Q1100,860 1300,875" stroke="#C83010" stroke-width="1.5" fill="none" opacity="0.2"/>
+      <path d="M200,895 Q450,882 700,890 Q950,898 1200,886" stroke="#E04020" stroke-width="1" fill="none" opacity="0.15"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Geologia · Vulkanologi</span>
+    </div>
+    <h1>Fasies<br><em>Gunung Api</em></h1>
+    <p class="hero-sub">Volcanic Facies Architecture</p>
+    <p>Fasies gunung api adalah satuan batuan yang mencerminkan lingkungan dan proses pembentukan di sekitar pusat erupsi. Memahami fasies adalah kunci rekonstruksi sejarah erupsi dan mitigasi bencana vulkanik.</p>
+    <div class="hero-cta">
+      <a href="#fasies" class="btn-fire">Jelajahi Fasies</a>
+      <a href="#indonesia" class="btn-outline">G. Api Indonesia</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- INTRO FASIES -->
+<section class="intro-section" id="fasies">
+  <div class="intro-text">
+    <span class="label">Definisi & Konsep Dasar</span>
+    <h2>Apa Itu Fasies Gunung Api?</h2>
+    <p>Fasies gunung api (volcanic facies) adalah konsep dalam geologi vulkanik yang mengelompokkan batuan berdasarkan karakteristik fisik, kimia, dan proses pembentukannya yang berkaitan dengan jarak dari pusat erupsi (vent).</p>
+    <p>Konsep ini pertama dikembangkan oleh Vessel & Davies (1981) dan disempurnakan oleh Cas & Wright (1987). Setiap fasies memiliki asosiasi batuan, tekstur, dan struktur yang khas sebagai respons terhadap mekanisme transportasi dan pengendapan material vulkanik.</p>
+    <p>Dalam peta geologi, fasies gunung api membantu ahli geologi merekonstruksi morfologi, volume, dan mekanisme erupsi purba yang kini telah tererosi.</p>
+  </div>
+  <div class="fasies-diagram-wrap">
+    <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+      <!-- background -->
+      <rect width="480" height="380" fill="#0A0806" rx="2"/>
+
+      <!-- sky -->
+      <rect x="0" y="0" width="480" height="160" fill="#0F0A08" rx="2"/>
+
+      <!-- VOLCANO CROSS SECTION -->
+      <!-- distal zone (far right/left ground) -->
+      <rect x="0" y="220" width="480" height="160" fill="#1A1208" rx="0 0 2 2"/>
+      <!-- medial zone -->
+      <path d="M80,220 L400,220 L380,260 L100,260Z" fill="#221408"/>
+      <!-- proximal zone flank -->
+      <path d="M160,220 L320,220 L310,265 L170,265Z" fill="#2C1A0A"/>
+
+      <!-- main volcano shape -->
+      <polygon points="240,40 340,220 140,220" fill="#1E1008"/>
+      <polygon points="240,45 320,220 160,220" fill="#180C06"/>
+
+      <!-- crater -->
+      <ellipse cx="240" cy="48" rx="18" ry="9" fill="#3A1A08"/>
+      <ellipse cx="240" cy="47" rx="12" ry="6" fill="#C43010" opacity="0.5"/>
+      <ellipse cx="240" cy="46" rx="6" ry="3" fill="#FF8040" opacity="0.6"/>
+
+      <!-- lava/magma conduit -->
+      <path d="M236,380 Q235,280 237,200 L243,200 Q245,280 244,380Z" fill="#C43010" opacity="0.25"/>
+      <path d="M238,380 Q238,280 239,200 L241,200 Q242,280 242,380Z" fill="#FF6020" opacity="0.3"/>
+
+      <!-- FASIES ZONES LABELS -->
+      <!-- Proximal zone highlight -->
+      <path d="M160,220 L320,220 L310,265 L170,265Z" fill="#C43010" opacity="0.08" stroke="#C43010" stroke-width="0.5" stroke-dasharray="3,3"/>
+      <!-- proximal label -->
+      <text x="240" y="250" text-anchor="middle" fill="#E87060" font-size="9" font-family="Outfit, sans-serif" font-weight="600" letter-spacing="1.5">PROKSIMAL</text>
+
+      <!-- Medial zone highlight -->
+      <path d="M80,262 L400,262 L390,295 L90,295Z" fill="#E07020" opacity="0.07" stroke="#E07020" stroke-width="0.5" stroke-dasharray="3,3"/>
+      <text x="240" y="282" text-anchor="middle" fill="#E8A060" font-size="9" font-family="Outfit, sans-serif" font-weight="600" letter-spacing="1.5">MEDIAL</text>
+
+      <!-- Distal zone -->
+      <rect x="10" y="296" width="460" height="30" fill="#4A7090" opacity="0.07" stroke="#4A7090" stroke-width="0.5" stroke-dasharray="3,3"/>
+      <text x="240" y="315" text-anchor="middle" fill="#80B0CC" font-size="9" font-family="Outfit, sans-serif" font-weight="600" letter-spacing="1.5">DISTAL</text>
+
+      <!-- distance arrows -->
+      <line x1="160" y1="345" x2="240" y2="345" stroke="#5A4E42" stroke-width="0.8"/>
+      <line x1="320" y1="345" x2="240" y2="345" stroke="#5A4E42" stroke-width="0.8"/>
+      <polygon points="163,343 157,345 163,347" fill="#5A4E42"/>
+      <polygon points="317,343 323,345 317,347" fill="#5A4E42"/>
+      <text x="240" y="360" text-anchor="middle" fill="#5A4E42" font-size="8" font-family="Outfit" letter-spacing="1">0 — 5 km proksimal</text>
+
+      <line x1="85" y1="370" x2="155" y2="370" stroke="#5A4E42" stroke-width="0.8"/>
+      <polygon points="88,368 82,370 88,372" fill="#5A4E42"/>
+      <text x="118" y="368" text-anchor="middle" fill="#5A4E42" font-size="7" font-family="Outfit">5–20 km</text>
+
+      <!-- eruptive column -->
+      <path d="M235,40 Q220,20 210,5 Q215,0 220,5 Q230,18 235,38Z" fill="#3A3028" opacity="0.5"/>
+      <path d="M245,40 Q260,20 270,5 Q265,0 260,5 Q250,18 245,38Z" fill="#3A3028" opacity="0.5"/>
+      <ellipse cx="240" cy="10" rx="28" ry="8" fill="#2A2420" opacity="0.55"/>
+      <ellipse cx="235" cy="-2" rx="35" ry="10" fill="#252018" opacity="0.4"/>
+
+      <!-- pyroclastic fall arrows -->
+      <line x1="270" y1="18" x2="350" y2="120" stroke="#C8900A" stroke-width="0.7" stroke-dasharray="3,2" opacity="0.5"/>
+      <line x1="280" y1="22" x2="410" y2="150" stroke="#C8900A" stroke-width="0.7" stroke-dasharray="3,2" opacity="0.4"/>
+      <polygon points="348,118 354,122 352,126" fill="#C8900A" opacity="0.5"/>
+      <polygon points="408,148 414,152 412,156" fill="#C8900A" opacity="0.4"/>
+
+      <!-- labels right side -->
+      <text x="360" y="115" fill="#C8900A" font-size="8" font-family="Outfit" opacity="0.7">Jatuhan Piroklastik</text>
+      <text x="370" y="155" fill="#C8900A" font-size="8" font-family="Outfit" opacity="0.6">(Pyroclastic Fall)</text>
+
+      <!-- PDC arrow -->
+      <path d="M240,220 Q300,230 370,240" stroke="#C43010" stroke-width="1.2" fill="none" opacity="0.5" marker-end="none"/>
+      <polygon points="369,237 375,240 369,243" fill="#C43010" opacity="0.5"/>
+      <text x="330" y="235" fill="#E87060" font-size="8" font-family="Outfit" opacity="0.7">PDC →</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 3 FASIES UTAMA -->
+<section class="fasies-section">
+  <div class="section-head">
+    <span class="label">Zonasi Vulkanik</span>
+    <h2 class="section-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:var(--cream);">Tiga Fasies Utama Gunung Api</h2>
+    <p>Berdasarkan jarak dari pusat erupsi dan karakteristik endapannya, gunung api dibagi menjadi tiga zona fasies yang masing-masing memiliki ciri batuan, struktur, dan proses yang khas.</p>
+  </div>
+
+  <div class="fasies-grid">
+    <!-- PROKSIMAL -->
+    <div class="fasies-card" style="--card-color:#E87060;">
+      <span class="card-num">01</span>
+      <span class="card-zone">Zona I</span>
+      <div class="card-title">Fasies Proksimal</div>
+      <p class="card-desc">Zona terdekat dengan pusat erupsi (vent/kawah), berjarak 0–5 km. Didominasi material berukuran besar dari letusan langsung. Umumnya tersusun oleh breksi, aglomerat, dan lava masif.</p>
+      <div class="card-features">
+        <div class="feature-item"><div class="feature-dot"></div><span>Batuan: Breksi volkanik, aglomerat, lava masif, dike, sill, dan kubah lava</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Tekstur: Fragmen besar (>64 mm), klastik kasar, poorly sorted</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Proses: Jatuhan balistik, aliran lava, letusan freatomagmatik</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Struktur: Orientasi acak, pendinginan kolumnar pada lava</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Alterasi: Zona propilitik–argilik kuat akibat sistem hidrotermal</span></div>
+      </div>
+      <span class="card-badge">0 – 5 km dari vent</span>
+    </div>
+
+    <!-- MEDIAL -->
+    <div class="fasies-card" style="--card-color:#E8A060;">
+      <span class="card-num">02</span>
+      <span class="card-zone">Zona II</span>
+      <div class="card-title">Fasies Medial</div>
+      <p class="card-desc">Zona transisi pada jarak 5–20 km dari pusat erupsi. Material lebih halus dan berlapis baik. Didominasi endapan piroklastik aliran dan surge dengan ketebalan bervariasi.</p>
+      <div class="card-features">
+        <div class="feature-item"><div class="feature-dot"></div><span>Batuan: Tuf aliran (ignimbrit), surjit, lahar, breksi laharik</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Tekstur: Fragmen sedang–halus, graded bedding, welded tuff</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Proses: PDC (Pyroclastic Density Current), lahar, surge</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Struktur: Laminasi planar, cross bedding, grading normal</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Alterasi: Zona argilik–silisifikasi lemah</span></div>
+      </div>
+      <span class="card-badge">5 – 20 km dari vent</span>
+    </div>
+
+    <!-- DISTAL -->
+    <div class="fasies-card" style="--card-color:#80B0CC;">
+      <span class="card-num">03</span>
+      <span class="card-zone">Zona III</span>
+      <div class="card-title">Fasies Distal</div>
+      <p class="card-desc">Zona terjauh dari pusat erupsi, >20 km. Material berukuran halus yang diendapkan oleh media udara dan air. Sering berasosiasi dengan endapan sedimen lakustrin atau marine.</p>
+      <div class="card-features">
+        <div class="feature-item"><div class="feature-dot"></div><span>Batuan: Tuf halus, epiklastik volkanik, endapan rework, tefra</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Tekstur: Fragmen halus (<2 mm), well sorted, berlapis tipis</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Proses: Jatuhan abu udara, reworking fluvial dan lakustrin</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Struktur: Laminasi halus, parallel bedding, ripple marks</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Alterasi: Minimal hingga tidak ada</span></div>
+      </div>
+      <span class="card-badge">> 20 km dari vent</span>
+    </div>
+  </div>
+</section>
+
+<!-- TIPE ERUPSI -->
+<section class="eruption-section" id="eruption">
+  <div class="section-head">
+    <span class="label">Klasifikasi Erupsi</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:var(--cream);letter-spacing:-0.02em;margin-bottom:1rem;">Tipe-Tipe Erupsi Gunung Api</h2>
+    <p style="font-size:0.95rem;line-height:1.8;color:rgba(216,207,196,0.55);max-width:620px;">Tipe erupsi sangat menentukan karakter fasies yang terbentuk. VEI (Volcanic Explosivity Index) mengukur besarnya ledakan dari 0 (efusif) hingga 8 (super-kolosal).</p>
+  </div>
+
+  <div class="erupt-grid">
+    <div class="erupt-card">
+      <div class="erupt-icon">🌋</div>
+      <div>
+        <div class="erupt-name">Erupsi Hawaian</div>
+        <span class="erupt-vei">VEI 0–1 · Efusif</span>
+        <p class="erupt-desc">Erupsi sangat tenang dengan lava basaltik encer yang mengalir jauh. Menghasilkan fasies proksimal berupa lava sheet flow dan tube. Contoh: Kilauea, Hawaii.</p>
+      </div>
+    </div>
+    <div class="erupt-card">
+      <div class="erupt-icon">💨</div>
+      <div>
+        <div class="erupt-name">Erupsi Strombolian</div>
+        <span class="erupt-vei">VEI 1–3 · Semi-eksplosif</span>
+        <p class="erupt-desc">Ledakan ritmis melemparkan material pijar (scoria, bom volkanik). Menghasilkan kerucut scoria proksimal dan lapisan jatuhan medial. Contoh: Stromboli, Italia; Anak Krakatau.</p>
+      </div>
+    </div>
+    <div class="erupt-card">
+      <div class="erupt-icon">☁️</div>
+      <div>
+        <div class="erupt-name">Erupsi Vulkanian</div>
+        <span class="erupt-vei">VEI 2–4 · Eksplosif</span>
+        <p class="erupt-desc">Erupsi pendek namun sangat kuat disertai kolom erupsi hingga 20 km. Menghasilkan endapan surge, breksi, dan jatuhan abu yang cukup tebal di fasies medial.</p>
+      </div>
+    </div>
+    <div class="erupt-card">
+      <div class="erupt-icon">🔥</div>
+      <div>
+        <div class="erupt-name">Erupsi Plinian</div>
+        <span class="erupt-vei">VEI 4–6 · Sangat Eksplosif</span>
+        <p class="erupt-desc">Kolom erupsi mencapai stratosfer (>25 km). Menghasilkan ignimbrit luas, deposito jatuhan tebal, dan mungkin membentuk kaldera. Contoh: Tambora 1815, Pinatubo 1991.</p>
+      </div>
+    </div>
+    <div class="erupt-card">
+      <div class="erupt-icon">💥</div>
+      <div>
+        <div class="erupt-name">Erupsi Ultra-Plinian</div>
+        <span class="erupt-vei">VEI 7–8 · Katastrofik</span>
+        <p class="erupt-desc">Erupsi terbesar yang pernah tercatat. Kolom erupsi menembus stratosfer, menyebabkan tahun tanpa musim panas. Endapan ignimbrit tersebar ribuan km. Contoh: Toba ~74.000 tahun lalu.</p>
+      </div>
+    </div>
+    <div class="erupt-card">
+      <div class="erupt-icon">🌊</div>
+      <div>
+        <div class="erupt-name">Erupsi Freatomagmatik</div>
+        <span class="erupt-vei">VEI 1–5 · Hidrovulkanik</span>
+        <p class="erupt-desc">Interaksi magma dengan air (laut, danau, air tanah) menghasilkan ledakan dahsyat dan endapan surjit (base surge). Membentuk maar dan tuff ring di fasies proksimal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUK VOLKANIK -->
+<section class="produk-section" id="produk">
+  <div class="section-head">
+    <span class="label">Material Erupsi</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:var(--cream);letter-spacing:-0.02em;margin-bottom:1rem;">Produk & Endapan Volkanik</h2>
+    <p style="font-size:0.95rem;line-height:1.8;color:rgba(216,207,196,0.55);max-width:620px;">Setiap produk erupsi memiliki karakteristik fisik yang menentukan di fasies mana ia akan ditemukan dalam rekaman geologi.</p>
+  </div>
+
+  <table class="produk-table">
+    <thead>
+      <tr>
+        <th>Produk</th>
+        <th>Ukuran / Tipe</th>
+        <th>Deskripsi</th>
+        <th>Fasies Utama</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Lava</td>
+        <td>Aliran masif</td>
+        <td>Magma yang mengalir ke permukaan bumi. Dapat membentuk pahoehoe (ropy) atau a'a (kasar blok). Ketebalan 1–100 m.</td>
+        <td><span class="fasies-tag tag-proximal">Proksimal</span></td>
+      </tr>
+      <tr>
+        <td>Bom Vulkanik</td>
+        <td>&gt; 64 mm</td>
+        <td>Fragmen lava pijar yang dilemparkan balistik dan membeku di udara. Bentuk khas fusiform, breadcrust, ribbon. Ditemukan dekat kawah.</td>
+        <td><span class="fasies-tag tag-proximal">Proksimal</span></td>
+      </tr>
+      <tr>
+        <td>Lapili</td>
+        <td>2 – 64 mm</td>
+        <td>Fragmen piroklastik berukuran kerikil. Termasuk scoria (vesikular, mafik) dan reticulite. Diendapkan oleh jatuhan atau aliran.</td>
+        <td><span class="fasies-tag tag-proximal">Proksimal</span> <span class="fasies-tag tag-medial">Medial</span></td>
+      </tr>
+      <tr>
+        <td>Abu Volkanik (Tefra)</td>
+        <td>&lt; 2 mm</td>
+        <td>Partikel kaca volkanik halus yang tersuspensi di kolom erupsi dan ditiup angin. Dapat menyebar ribuan km dari sumber.</td>
+        <td><span class="fasies-tag tag-medial">Medial</span> <span class="fasies-tag tag-distal">Distal</span></td>
+      </tr>
+      <tr>
+        <td>Ignimbrit</td>
+        <td>Endapan PDC</td>
+        <td>Endapan Pyroclastic Density Current (aliran piroklastik). Terdiri dari campuran gas, abu, dan fragmen batuan yang bergerak cepat. Dapat membentuk welded tuff.</td>
+        <td><span class="fasies-tag tag-proximal">Proksimal</span> <span class="fasies-tag tag-medial">Medial</span></td>
+      </tr>
+      <tr>
+        <td>Surge Deposit</td>
+        <td>Endapan surge</td>
+        <td>Endapan berenergi tinggi dari aliran piroklastik encer. Dicirikan oleh struktur dune, antidune, dan cross stratifikasi khas.</td>
+        <td><span class="fasies-tag tag-proximal">Proksimal</span> <span class="fasies-tag tag-medial">Medial</span></td>
+      </tr>
+      <tr>
+        <td>Lahar</td>
+        <td>Aliran debris</td>
+        <td>Aliran lumpur vulkanik jenuh air. Terjadi saat abu dan piroklastik tercampur air hujan/gletser. Dapat mengalir puluhan km dari kawah.</td>
+        <td><span class="fasies-tag tag-medial">Medial</span> <span class="fasies-tag tag-distal">Distal</span></td>
+      </tr>
+      <tr>
+        <td>Epiklastik Volkanik</td>
+        <td>Reworked material</td>
+        <td>Material volkanik yang telah dirombak ulang oleh proses fluvial, lakustrin, atau marine. Dicirikan oleh sorting baik dan rounded fragments.</td>
+        <td><span class="fasies-tag tag-distal">Distal</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- GUNUNG API INDONESIA -->
+<section class="indonesia-section" id="indonesia">
+  <div class="section-head">
+    <span class="label">Ring of Fire</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:var(--cream);letter-spacing:-0.02em;margin-bottom:1rem;">Gunung Api Indonesia</h2>
+    <p style="font-size:0.95rem;line-height:1.8;color:rgba(216,207,196,0.55);max-width:640px;">Indonesia memiliki sekitar 127 gunung api aktif—terbanyak di dunia—dan berada di pertemuan 3 lempeng tektonik besar. Setiap gunung api menampilkan arsitektur fasies yang unik.</p>
+  </div>
+  <div class="gunung-grid">
+    <div class="gunung-card">
+      <div class="gunung-bar" style="width:85%"></div>
+      <span class="gunung-elev">3.676 mdpl · Jawa Timur</span>
+      <div class="gunung-name">Semeru</div>
+      <div class="gunung-lokasi">Gunung tertinggi di Jawa</div>
+      <span class="gunung-status status-aktif">Aktif Tinggi</span>
+      <div class="gunung-tipe">Stratovolkano · Erupsi Strombolian–Vulkanian · Fasies proksimal berupa kubah lava dan breksi Welirang</div>
+    </div>
+    <div class="gunung-card">
+      <div class="gunung-bar" style="width:92%"></div>
+      <span class="gunung-elev">2.329 mdpl · Jawa Tengah</span>
+      <div class="gunung-name">Merapi</div>
+      <div class="gunung-lokasi">Gunung api paling aktif di Indonesia</div>
+      <span class="gunung-status status-aktif">Aktif Tinggi</span>
+      <div class="gunung-tipe">Stratovolkano · Erupsi eksplosif + PDC (Awan Panas) · Ignimbrit medial Merapi Old</div>
+    </div>
+    <div class="gunung-card">
+      <div class="gunung-bar" style="width:78%"></div>
+      <span class="gunung-elev">813 mdpl · Selat Sunda</span>
+      <div class="gunung-name">Anak Krakatau</div>
+      <div class="gunung-lokasi">Lahir dari Krakatau 1883</div>
+      <span class="gunung-status status-aktif">Aktif</span>
+      <div class="gunung-tipe">Stratovolkano muda · Erupsi Strombolian–Surtseyan · Fasies proksimal tuf palagonit freatomagmatik</div>
+    </div>
+    <div class="gunung-card">
+      <div class="gunung-bar" style="width:70%"></div>
+      <span class="gunung-elev">2.912 mdpl · Sulawesi Utara</span>
+      <div class="gunung-name">Lokon-Empung</div>
+      <div class="gunung-lokasi">Kompleks volkanik Sulawesi</div>
+      <span class="gunung-status status-waspada">Waspada</span>
+      <div class="gunung-tipe">Stratovolkano kembar · Erupsi Vulkanian · Fasies proksimal sulfatara & fumarol aktif</div>
+    </div>
+    <div class="gunung-card">
+      <div class="gunung-bar" style="width:65%"></div>
+      <span class="gunung-elev">2.211 mdpl · Sumatra Utara</span>
+      <div class="gunung-name">Sinabung</div>
+      <div class="gunung-lokasi">Aktif kembali sejak 2010</div>
+      <span class="gunung-status status-aktif">Aktif</span>
+      <div class="gunung-tipe">Stratovolkano · Pertumbuhan kubah + PDC · Ignimbrit dan lahar medial aktif berkala</div>
+    </div>
+    <div class="gunung-card">
+      <div class="gunung-bar" style="width:60%"></div>
+      <span class="gunung-elev">2.385 mdpl · Maluku</span>
+      <div class="gunung-name">Gamalama</div>
+      <div class="gunung-lokasi">G. Api Pulau Ternate</div>
+      <span class="gunung-status status-waspada">Waspada</span>
+      <div class="gunung-tipe">Stratovolkano oseanik · Erupsi Vulkanian · Fasies tuf dan breksi proksimal dominan</div>
+    </div>
+    <div class="gunung-card">
+      <div class="gunung-bar" style="width:88%"></div>
+      <span class="gunung-elev">Kaldera · Sumatra Utara</span>
+      <div class="gunung-name">Toba</div>
+      <div class="gunung-lokasi">Supervolcano terbesar Kuarter</div>
+      <span class="gunung-status status-waspada">Monitored</span>
+      <div class="gunung-tipe">Supervolcano kaldera · VEI 8 (~74.000 thn lalu) · Ignimbrit Toba tersebar ke seluruh Asia Selatan</div>
+    </div>
+    <div class="gunung-card">
+      <div class="gunung-bar" style="width:55%"></div>
+      <span class="gunung-elev">2.850 mdpl · NTB</span>
+      <div class="gunung-name">Rinjani</div>
+      <div class="gunung-lokasi">Gunung tertinggi kedua di Indonesia</div>
+      <span class="gunung-status status-waspada">Waspada</span>
+      <div class="gunung-tipe">Stratovolkano + Kaldera Segara Anak · Erupsi Plinian purba · Fasies ignimbrit Samalas 1257 M</div>
+    </div>
+  </div>
+</section>
+
+<!-- BAHAYA VOLKANIK -->
+<section class="bahaya-section" id="bahaya">
+  <div class="section-head">
+    <span class="label">Mitigasi & Kebencanaan</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:var(--cream);letter-spacing:-0.02em;margin-bottom:1rem;">Bahaya Volkanik Utama</h2>
+    <p style="font-size:0.95rem;line-height:1.8;color:rgba(216,207,196,0.55);max-width:620px;">Memahami fasies gunung api secara langsung mendukung pemetaan zona bahaya. Setiap jenis bahaya memiliki radius dampak yang berkorelasi dengan fasies tertentu.</p>
+  </div>
+  <div class="bahaya-grid">
+    <div class="bahaya-card" style="--card-color:#E87060;">
+      <span class="bahaya-icon">🌊</span>
+      <div class="bahaya-title">Awan Panas (PDC)</div>
+      <p class="bahaya-desc">Aliran gas panas, abu, dan fragmen batuan yang bergerak hingga 700°C dengan kecepatan &gt;150 km/jam. Paling mematikan. Mengendapkan ignimbrit di fasies proksimal–medial.</p>
+      <div class="bahaya-level">
+        <span>Tingkat Bahaya</span>
+        <div class="level-dots">
+          <div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot on"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bahaya-card" style="--card-color:#E87060;">
+      <span class="bahaya-icon">🪨</span>
+      <div class="bahaya-title">Lahar</div>
+      <p class="bahaya-desc">Aliran debris jenuh air yang mengikuti lembah sungai. Dapat terjadi saat erupsi atau jauh setelahnya saat hujan lebat. Mengancam permukiman di fasies medial–distal.</p>
+      <div class="bahaya-level">
+        <span>Tingkat Bahaya</span>
+        <div class="level-dots">
+          <div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bahaya-card" style="--card-color:#E8A060;">
+      <span class="bahaya-icon">💨</span>
+      <div class="bahaya-title">Hujan Abu</div>
+      <p class="bahaya-desc">Abu halus yang jatuh dari kolom erupsi. Merusak atap, pertanian, infrastruktur, dan kesehatan pernapasan. Dapat menjangkau ribuan km tergantung angin (fasies distal).</p>
+      <div class="bahaya-level">
+        <span>Tingkat Bahaya</span>
+        <div class="level-dots">
+          <div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot"></div><div class="level-dot"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bahaya-card" style="--card-color:#E8A060;">
+      <span class="bahaya-icon">☠️</span>
+      <div class="bahaya-title">Gas Vulkanik</div>
+      <p class="bahaya-desc">SO₂, CO₂, H₂S, dan HF yang diemisikan dari kawah dan fumarol. CO₂ yang berat dapat mengisi lembah rendah (Limnic eruption). Berbahaya di fasies proksimal.</p>
+      <div class="bahaya-level">
+        <span>Tingkat Bahaya</span>
+        <div class="level-dots">
+          <div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bahaya-card" style="--card-color:#80B0CC;">
+      <span class="bahaya-icon">🌋</span>
+      <div class="bahaya-title">Aliran Lava</div>
+      <p class="bahaya-desc">Mengalir lambat namun menghancurkan segalanya. Lava basaltik encer dapat mengalir puluhan km (fasies proksimal–medial). Lava asam mengalir pendek namun tebal.</p>
+      <div class="bahaya-level">
+        <span>Tingkat Bahaya</span>
+        <div class="level-dots">
+          <div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot"></div><div class="level-dot"></div><div class="level-dot"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bahaya-card" style="--card-color:#80B0CC;">
+      <span class="bahaya-icon">🌊</span>
+      <div class="bahaya-title">Tsunami Volkanik</div>
+      <p class="bahaya-desc">Dipicu longsoran flank, kaldera collapse, atau erupsi bawah laut. Krakatau 1883 membangkitkan tsunami 30 m. Ancaman pada gunung api oseanik dan pulau.</p>
+      <div class="bahaya-level">
+        <span>Tingkat Bahaya</span>
+        <div class="level-dots">
+          <div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot on"></div><div class="level-dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Geo<span>logia</span></div>
+    <div class="footer-links">
+      <a href="geologi-mineral-batuan.html">Mineral & Batuan</a>
+      <a href="#fasies">Fasies</a>
+      <a href="#indonesia">G. Api Indonesia</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Geologia · Vulkanologi & Ilmu Kebumian</span>
+    <span>Fasies Gunung Api · Indonesia · Ring of Fire</span>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const reveal = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.style.opacity='1';
+        e.target.style.transform='translateY(0)';
+      }
+    });
+  },{threshold:0.08});
+
+  document.querySelectorAll('.fasies-card,.erupt-card,.gunung-card,.bahaya-card,.produk-table tbody tr').forEach(el=>{
+    el.style.opacity='0';
+    el.style.transform='translateY(24px)';
+    el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+    reveal.observe(el);
+  });
+
+  // stagger fasies cards
+  document.querySelectorAll('.fasies-card').forEach((el,i)=>{
+    el.style.transitionDelay = (i*0.12)+'s';
+  });
+  document.querySelectorAll('.gunung-card').forEach((el,i)=>{
+    el.style.transitionDelay = (i*0.07)+'s';
+  });
+  document.querySelectorAll('.bahaya-card').forEach((el,i)=>{
+    el.style.transitionDelay = (i*0.09)+'s';
+  });
+</script>
+</body>
+</html>
